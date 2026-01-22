@@ -1,1 +1,1 @@
-web: python manage.py migrate && python manage.py load_checklist && python manage.py create_railway_admin && python manage.py collectstatic --noinput && gunicorn dp_compass.wsgi:application --bind 0.0.0.0:$PORT
+web: python manage.py migrate && python manage.py load_checklist && python manage.py load_sample_data && python manage.py collectstatic --noinput && gunicorn dp_compass.wsgi:application --bind 0.0.0.0:$PORT
