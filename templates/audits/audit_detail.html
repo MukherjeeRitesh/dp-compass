@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ audit.title }} - DP-COMPASS{% endblock %}
+{% block page_title %}Audit Details{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="card-title">{{ audit.title }}</h2>
+                <span
+                    class="badge badge-{% if audit.status == 'completed' %}success{% elif audit.status == 'in_progress' %}info{% else %}warning{% endif %}">
+                    {{ audit.get_status_display }}
+                </span>
+            </div>
+
+            <div class="mb-3">
+                <strong>Application:</strong>
+                <a href="{% url 'application_detail' audit.application.pk %}" style="color: var(--primary-light);">
+                    {{ audit.application.name }}
+                </a>
+            </div>
+
+            {% if audit.description %}
+            <div class="mb-3">
+                <strong>Description:</strong>
+                <p style="color: var(--text-muted);">{{ audit.description }}</p>
+            </div>
+            {% endif %}
+
+            <div class="mb-3">
+                <strong>Progress:</strong>
+                <div class="progress mt-2" style="height: 12px;">
+                    <div class="progress-bar" style="width: {{ audit.progress_percentage }}%;"></div>
+                </div>
+                <small class="text-muted">{{ audit.progress_percentage }}% complete</small>
+            </div>
+
+            {% if audit.compliance_score %}
+            <div class="mb-3">
+                <strong>Compliance Score:</strong>
+                <span
+                    class="badge {% if audit.compliance_score >= 80 %}badge-success{% elif audit.compliance_score >= 50 %}badge-warning{% else %}badge-danger{% endif %}"
+                    style="font-size: 1rem;">
+                    {{ audit.compliance_score }}%
+                </span>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Audit Responses Summary -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="bi bi-list-check me-2"></i>
+                    Checklist Responses
+                </h2>
+            </div>
+
+            {% for category in categories %}
+            <div style="margin-bottom: 16px;">
+                <h5 style="color: var(--primary-light); margin-bottom: 12px;">{{ category.name }}</h5>
+                {% for response in responses %}
+                {% if response.checklist_item.category == category %}
+                <div style="background: var(--bg-glass); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div>
+                            <strong>{{ response.checklist_item.code }}:</strong> {{ response.checklist_item.title }}
+                        </div>
+                        <span
+                            class="badge badge-{% if response.status == 'compliant' %}success{% elif response.status == 'non_compliant' %}danger{% elif response.status == 'partially_compliant' %}warning{% else %}secondary{% endif %}">
+                            {{ response.get_status_display }}
+                        </span>
+                    </div>
+                    {% if response.findings %}
+                    <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 8px; margin-bottom: 0;">
+                        {{ response.findings|truncatewords:30 }}
+                    </p>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% empty %}
+            <p style="color: var(--text-muted); text-align: center; padding: 20px;">
+                No responses recorded yet
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Audit Info
+                </h2>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Auditor</span>
+                    <span>{{ audit.auditor.get_full_name|default:audit.auditor.username }}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Created</span>
+                    <span>{{ audit.created_at|date:"M d, Y" }}</span>
+                </div>
+                {% if audit.started_at %}
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Started</span>
+                    <span>{{ audit.started_at|date:"M d, Y H:i" }}</span>
+                </div>
+                {% endif %}
+                {% if audit.completed_at %}
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Completed</span>
+                    <span>{{ audit.completed_at|date:"M d, Y H:i" }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="bi bi-lightning me-2"></i>
+                    Actions
+                </h2>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                {% if audit.status != 'completed' and user == audit.auditor or user.is_admin_user %}
+                <a href="{% url 'audit_execute' audit.pk %}" class="btn btn-primary w-100">
+                    <i class="bi bi-play-circle"></i>
+                    {% if audit.status == 'pending' %}Start Audit{% else %}Continue Audit{% endif %}
+                </a>
+                {% endif %}
+
+                {% if audit.status == 'completed' %}
+                <a href="{% url 'report_generate' audit.pk %}" class="btn btn-success w-100">
+                    <i class="bi bi-file-earmark-bar-graph"></i>
+                    Generate Report
+                </a>
+                {% endif %}
+
+                <a href="{% url 'audit_list' %}" class="btn btn-secondary w-100">
+                    <i class="bi bi-arrow-left"></i>
+                    Back to Audits
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

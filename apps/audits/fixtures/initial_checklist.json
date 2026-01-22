@@ -1,0 +1,266 @@
+[
+  {
+    "model": "core.dpdpsection",
+    "pk": 1,
+    "fields": {
+      "section_number": "6",
+      "title": "Consent",
+      "description": "Processing of personal data based on consent of data principal.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "core.dpdpsection",
+    "pk": 2,
+    "fields": {
+      "section_number": "8",
+      "title": "Obligations of Data Fiduciary",
+      "description": "General obligations of data fiduciary including data protection measures.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "core.dpdpsection",
+    "pk": 3,
+    "fields": {
+      "section_number": "9",
+      "title": "Children's Personal Data",
+      "description": "Additional obligations for processing children's personal data.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "core.dpdpsection",
+    "pk": 4,
+    "fields": {
+      "section_number": "11",
+      "title": "Rights of Data Principal",
+      "description": "Rights of data principals including access and correction.",
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.auditcategory",
+    "pk": 1,
+    "fields": {
+      "name": "Data Collection & Consent",
+      "description": "Compliance requirements related to lawful collection of personal data and obtaining valid consent.",
+      "dpdp_section": 1,
+      "order": 1,
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.auditcategory",
+    "pk": 2,
+    "fields": {
+      "name": "Data Fiduciary Obligations",
+      "description": "Compliance with obligations of data fiduciaries under DPDP Act.",
+      "dpdp_section": 2,
+      "order": 2,
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.auditcategory",
+    "pk": 3,
+    "fields": {
+      "name": "Children's Data Protection",
+      "description": "Special requirements for processing personal data of children.",
+      "dpdp_section": 3,
+      "order": 3,
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.auditcategory",
+    "pk": 4,
+    "fields": {
+      "name": "Data Principal Rights",
+      "description": "Implementation of data principal rights under DPDP Act.",
+      "dpdp_section": 4,
+      "order": 4,
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.checklistitem",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "code": "DC-001",
+      "title": "Consent Notice Provided",
+      "description": "Verify that a clear and specific consent notice is provided to data principals before collecting personal data.",
+      "guidance": "Check if the application displays a consent notice that clearly explains what data is collected and why.",
+      "evidence_required": "Screenshots of consent forms, consent notice documents",
+      "severity": "critical",
+      "order": 1,
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.checklistitem",
+    "pk": 2,
+    "fields": {
+      "category": 1,
+      "code": "DC-002",
+      "title": "Consent is Free and Affirmative",
+      "description": "Verify that consent is obtained through a free and affirmative action by the data principal.",
+      "guidance": "Ensure consent is not bundled, pre-ticked, or obtained through deceptive practices.",
+      "evidence_required": "UI screenshots showing consent mechanism, user flow documentation",
+      "severity": "critical",
+      "order": 2,
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.checklistitem",
+    "pk": 3,
+    "fields": {
+      "category": 1,
+      "code": "DC-003",
+      "title": "Purpose Limitation",
+      "description": "Personal data is collected only for specified, lawful purposes disclosed to the data principal.",
+      "guidance": "Review privacy policy and data collection points to verify purpose limitation compliance.",
+      "evidence_required": "Privacy policy, data flow diagrams",
+      "severity": "major",
+      "order": 3,
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.checklistitem",
+    "pk": 4,
+    "fields": {
+      "category": 2,
+      "code": "DF-001",
+      "title": "Data Security Measures",
+      "description": "Reasonable security safeguards are implemented to prevent data breaches.",
+      "guidance": "Review security measures including encryption, access controls, and security policies.",
+      "evidence_required": "Security policy documents, encryption certificates, access control logs",
+      "severity": "critical",
+      "order": 1,
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.checklistitem",
+    "pk": 5,
+    "fields": {
+      "category": 2,
+      "code": "DF-002",
+      "title": "Data Breach Notification",
+      "description": "Procedures exist to notify Data Protection Board and affected individuals in case of breach.",
+      "guidance": "Verify breach notification procedures and timelines are documented.",
+      "evidence_required": "Incident response plan, breach notification templates",
+      "severity": "critical",
+      "order": 2,
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.checklistitem",
+    "pk": 6,
+    "fields": {
+      "category": 2,
+      "code": "DF-003",
+      "title": "Data Retention Policy",
+      "description": "Personal data is not retained longer than necessary for the purpose.",
+      "guidance": "Review data retention policies and verify implementation.",
+      "evidence_required": "Data retention policy, data lifecycle documentation",
+      "severity": "major",
+      "order": 3,
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.checklistitem",
+    "pk": 7,
+    "fields": {
+      "category": 3,
+      "code": "CD-001",
+      "title": "Verifiable Parental Consent",
+      "description": "For children's data, verifiable consent from parent/guardian is obtained.",
+      "guidance": "Check age verification mechanisms and parental consent workflows.",
+      "evidence_required": "Age verification UI, parental consent forms",
+      "severity": "critical",
+      "order": 1,
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.checklistitem",
+    "pk": 8,
+    "fields": {
+      "category": 3,
+      "code": "CD-002",
+      "title": "No Behavioral Tracking of Children",
+      "description": "No tracking or behavioral monitoring of children is performed.",
+      "guidance": "Verify analytics and tracking mechanisms exclude children's data.",
+      "evidence_required": "Analytics configuration, tracking policies",
+      "severity": "critical",
+      "order": 2,
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.checklistitem",
+    "pk": 9,
+    "fields": {
+      "category": 4,
+      "code": "DP-001",
+      "title": "Right to Access",
+      "description": "Data principals can access their personal data and processing information.",
+      "guidance": "Verify data access request mechanism is available and functional.",
+      "evidence_required": "Data access request form, response templates",
+      "severity": "major",
+      "order": 1,
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.checklistitem",
+    "pk": 10,
+    "fields": {
+      "category": 4,
+      "code": "DP-002",
+      "title": "Right to Correction",
+      "description": "Data principals can correct or complete their personal data.",
+      "guidance": "Check if data correction mechanism is available in the application.",
+      "evidence_required": "Profile edit functionality, data correction request process",
+      "severity": "major",
+      "order": 2,
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.checklistitem",
+    "pk": 11,
+    "fields": {
+      "category": 4,
+      "code": "DP-003",
+      "title": "Right to Erasure",
+      "description": "Data principals can request erasure of their personal data.",
+      "guidance": "Verify data deletion mechanism complies with retention requirements.",
+      "evidence_required": "Account deletion flow, data erasure request process",
+      "severity": "major",
+      "order": 3,
+      "is_active": true
+    }
+  },
+  {
+    "model": "audits.checklistitem",
+    "pk": 12,
+    "fields": {
+      "category": 4,
+      "code": "DP-004",
+      "title": "Grievance Redressal",
+      "description": "A mechanism for grievance redressal is available to data principals.",
+      "guidance": "Check for grievance redressal officer appointment and contact details.",
+      "evidence_required": "Grievance policy, contact information, response SLAs",
+      "severity": "major",
+      "order": 4,
+      "is_active": true
+    }
+  }
+]

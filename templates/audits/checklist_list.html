@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Compliance Checklist - DP-COMPASS{% endblock %}
+{% block page_title %}DPDP Compliance Checklist{% endblock %}
+
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="bi bi-list-check me-2"></i>
+            Compliance Checklist Items
+        </h2>
+    </div>
+    <p style="color: var(--text-muted);">
+        This checklist covers all major compliance requirements under the Digital Personal Data Protection Act.
+    </p>
+</div>
+
+{% for category in categories %}
+<div class="card mb-4">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="bi bi-folder me-2" style="color: var(--primary);"></i>
+            {{ category.name }}
+        </h2>
+        <span class="badge badge-primary">{{ category.checklist_count }} items</span>
+    </div>
+
+    {% if category.description %}
+    <p style="color: var(--text-muted); margin-bottom: 16px;">{{ category.description }}</p>
+    {% endif %}
+
+    {% for item in category.checklist_items.all %}
+    {% if item.is_active %}
+    <div style="background: var(--bg-glass); padding: 16px; border-radius: 8px; margin-bottom: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div>
+                <strong style="color: var(--primary-light);">{{ item.code }}</strong>
+                <span style="margin-left: 8px;">{{ item.title }}</span>
+            </div>
+            <span
+                class="badge badge-{% if item.severity == 'critical' %}danger{% elif item.severity == 'major' %}warning{% elif item.severity == 'minor' %}info{% else %}secondary{% endif %}">
+                {{ item.get_severity_display }}
+            </span>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 8px; margin-bottom: 0;">
+            {{ item.description }}
+        </p>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+{% empty %}
+<div class="card">
+    <p style="color: var(--text-muted); text-align: center; padding: 40px;">
+        <i class="bi bi-inbox" style="font-size: 2rem; display: block; margin-bottom: 12px;"></i>
+        No checklist items configured. Please add items via the admin panel.
+    </p>
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Applications - DP-COMPASS{% endblock %}
+{% block page_title %}Registered Applications{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="bi bi-app-indicator me-2"></i>
+            Applications
+        </h2>
+        <a href="{% url 'application_create' %}" class="btn btn-primary">
+            <i class="bi bi-plus"></i> Register New
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Environment</th>
+                    <th>Owner</th>
+                    <th>Last Audit</th>
+                    <th>Score</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in applications %}
+                <tr>
+                    <td>
+                        <a href="{% url 'application_detail' app.pk %}"
+                            style="color: var(--text-primary); text-decoration: none; font-weight: 500;">
+                            {{ app.name }}
+                        </a>
+                    </td>
+                    <td>
+                        <span class="badge badge-info">{{ app.get_application_type_display }}</span>
+                    </td>
+                    <td>{{ app.get_environment_display }}</td>
+                    <td>{{ app.owner.get_full_name|default:app.owner.username|default:"-" }}</td>
+                    <td style="color: var(--text-muted);">
+                        {% if app.latest_audit %}{{ app.latest_audit.created_at|date:"M d, Y" }}{% else %}-{% endif %}
+                    </td>
+                    <td>
+                        {% if app.latest_score %}
+                        <span
+                            class="badge {% if app.latest_score.overall_score >= 80 %}badge-success{% elif app.latest_score.overall_score >= 50 %}badge-warning{% else %}badge-danger{% endif %}">
+                            {{ app.latest_score.overall_score }}%
+                        </span>
+                        {% else %}-{% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'application_detail' app.pk %}" class="btn btn-ghost btn-sm">View</a>
+                        <a href="{% url 'application_edit' app.pk %}" class="btn btn-secondary btn-sm">Edit</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 40px;">
+                        <i class="bi bi-inbox" style="font-size: 2rem; display: block; margin-bottom: 12px;"></i>
+                        No applications registered
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

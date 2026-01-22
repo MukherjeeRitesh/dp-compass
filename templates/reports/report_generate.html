@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Generate Report - DP-COMPASS{% endblock %}
+{% block page_title %}Generate Compliance Report{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="bi bi-file-earmark-bar-graph me-2"></i>
+                    Generate Report
+                </h2>
+            </div>
+
+            <div class="mb-4" style="background: var(--bg-glass); padding: 16px; border-radius: 8px;">
+                <h5>Audit: {{ audit.title }}</h5>
+                <p style="color: var(--text-muted); margin: 0;">
+                    Application: {{ audit.application.name }} |
+                    Completed: {{ audit.completed_at|date:"M d, Y" }} |
+                    Score: {{ audit.compliance_score|default:"N/A" }}%
+                </p>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label" for="title">Report Title *</label>
+                    <input type="text" class="form-control" name="title" id="title"
+                        value="Compliance Report - {{ audit.application.name }}" required>
+                </div>
+
+                {% if templates %}
+                <div class="mb-3">
+                    <label class="form-label" for="template">Report Template</label>
+                    <select class="form-select" name="template" id="template">
+                        <option value="">Use Default Template</option>
+                        {% for template in templates %}
+                        <option value="{{ template.pk }}">{{ template.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+
+                <div style="display: flex; gap: 12px;">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-file-earmark-plus"></i>
+                        Generate Report
+                    </button>
+                    <a href="{% url 'audit_detail' audit.pk %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

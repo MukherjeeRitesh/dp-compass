@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Audits - DP-COMPASS{% endblock %}
+{% block page_title %}Compliance Audits{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="bi bi-clipboard-check me-2"></i>
+            All Audits
+        </h2>
+        {% if user.is_auditor or user.is_admin_user %}
+        <a href="{% url 'audit_create' %}" class="btn btn-primary">
+            <i class="bi bi-plus"></i> New Audit
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Application</th>
+                    <th>Auditor</th>
+                    <th>Status</th>
+                    <th>Progress</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for audit in audits %}
+                <tr>
+                    <td><a href="{% url 'audit_detail' audit.pk %}"
+                            style="color: var(--text-primary); text-decoration: none;">{{ audit.title }}</a></td>
+                    <td>{{ audit.application.name }}</td>
+                    <td>{{ audit.auditor.get_full_name|default:audit.auditor.username }}</td>
+                    <td>
+                        <span
+                            class="badge badge-{% if audit.status == 'completed' %}success{% elif audit.status == 'in_progress' %}info{% elif audit.status == 'pending' %}warning{% else %}secondary{% endif %}">
+                            {{ audit.get_status_display }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="progress" style="width: 80px;">
+                            <div class="progress-bar" style="width: {{ audit.progress_percentage }}%;"></div>
+                        </div>
+                    </td>
+                    <td style="color: var(--text-muted);">{{ audit.created_at|date:"M d, Y" }}</td>
+                    <td>
+                        <a href="{% url 'audit_detail' audit.pk %}" class="btn btn-ghost btn-sm">View</a>
+                        {% if audit.status != 'completed' and user == audit.auditor or user.is_admin_user %}
+                        <a href="{% url 'audit_execute' audit.pk %}" class="btn btn-primary btn-sm">Execute</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 40px;">
+                        <i class="bi bi-inbox" style="font-size: 2rem; display: block; margin-bottom: 12px;"></i>
+                        No audits found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

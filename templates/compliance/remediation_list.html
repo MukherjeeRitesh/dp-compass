@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Remediations - DP-COMPASS{% endblock %}
+{% block page_title %}Remediation Tracking{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="bi bi-wrench me-2"></i>
+            All Remediations
+        </h2>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Assigned To</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for remediation in remediations %}
+                <tr>
+                    <td>
+                        <a href="{% url 'remediation_detail' remediation.pk %}" style="color: var(--text-primary);">
+                            {{ remediation.title }}
+                        </a>
+                    </td>
+                    <td>
+                        <span
+                            class="badge badge-{% if remediation.priority == 'critical' %}danger{% elif remediation.priority == 'high' %}warning{% elif remediation.priority == 'medium' %}info{% else %}secondary{% endif %}">
+                            {{ remediation.get_priority_display }}
+                        </span>
+                    </td>
+                    <td>
+                        <span
+                            class="badge badge-{% if remediation.status == 'resolved' %}success{% elif remediation.status == 'in_progress' %}info{% elif remediation.status == 'open' %}warning{% else %}secondary{% endif %}">
+                            {{ remediation.get_status_display }}
+                        </span>
+                    </td>
+                    <td>{{ remediation.assigned_to.get_full_name|default:"-" }}</td>
+                    <td
+                        style="color: {% if remediation.due_date and remediation.due_date < today %}var(--danger){% else %}var(--text-muted){% endif %};">
+                        {{ remediation.due_date|date:"M d, Y"|default:"-" }}
+                    </td>
+                    <td>
+                        <a href="{% url 'remediation_detail' remediation.pk %}" class="btn btn-ghost btn-sm">View</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 40px;">
+                        No remediations found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

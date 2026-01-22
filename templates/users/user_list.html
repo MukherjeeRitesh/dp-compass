@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Users - DP-COMPASS{% endblock %}
+{% block page_title %}User Management{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="bi bi-people me-2"></i>
+            All Users
+        </h2>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Organization</th>
+                    <th>Status</th>
+                    <th>Joined</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>{{ u.get_full_name|default:"-" }}</td>
+                    <td>{{ u.username }}</td>
+                    <td>
+                        <span
+                            class="badge badge-{% if u.role == 'admin' %}danger{% elif u.role == 'auditor' %}primary{% else %}info{% endif %}">
+                            {{ u.get_role_display }}
+                        </span>
+                    </td>
+                    <td>{{ u.organization|default:"-" }}</td>
+                    <td>
+                        <span class="badge {% if u.is_verified %}badge-success{% else %}badge-warning{% endif %}">
+                            {% if u.is_verified %}Verified{% else %}Pending{% endif %}
+                        </span>
+                    </td>
+                    <td style="color: var(--text-muted);">{{ u.date_joined|date:"M d, Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 40px;">
+                        No users found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

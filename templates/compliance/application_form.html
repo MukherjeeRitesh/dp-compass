@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ action }} Application - DP-COMPASS{% endblock %}
+{% block page_title %}{{ action }} Application{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="bi bi-app-indicator me-2"></i>
+                    {{ action }} Application
+                </h2>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label" for="id_name">Name *</label>
+                    {{ form.name }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="id_description">Description *</label>
+                    {{ form.description }}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="id_application_type">Type *</label>
+                        {{ form.application_type }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="id_environment">Environment *</label>
+                        {{ form.environment }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="id_owner">Owner</label>
+                        {{ form.owner }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="id_department">Department</label>
+                        {{ form.department }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label class="form-label" for="id_url">URL</label>
+                        {{ form.url }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label" for="id_version">Version</label>
+                        {{ form.version }}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="id_data_categories">Data Categories Processed</label>
+                    {{ form.data_categories }}
+                    <small class="form-text text-muted">Describe types of personal data this application
+                        processes</small>
+                </div>
+
+                <div style="display: flex; gap: 12px;">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check"></i>
+                        {{ action }} Application
+                    </button>
+                    <a href="{% url 'application_list' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

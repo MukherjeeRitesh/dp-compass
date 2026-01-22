@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - DP-COMPASS{% endblock %}
+
+{% block public_content %}
+<div class="auth-card" style="max-width: 600px;">
+    <div class="auth-header">
+        <div class="logo">
+            <i class="bi bi-shield-check"></i>
+            <span>DP-COMPASS</span>
+        </div>
+        <h1>DPDP Compliance Platform</h1>
+        <p>Centralized compliance assessment for Applications, Systems & Services</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 24px;">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;">
+            <div class="stat-card" style="flex-direction: column; text-align: center; padding: 16px;">
+                <i class="bi bi-clipboard-check"
+                    style="font-size: 2rem; color: var(--primary); margin-bottom: 8px;"></i>
+                <span style="font-size: 0.875rem; color: var(--text-muted);">Audit Checklists</span>
+            </div>
+            <div class="stat-card" style="flex-direction: column; text-align: center; padding: 16px;">
+                <i class="bi bi-file-earmark-bar-graph"
+                    style="font-size: 2rem; color: var(--success); margin-bottom: 8px;"></i>
+                <span style="font-size: 0.875rem; color: var(--text-muted);">Compliance Reports</span>
+            </div>
+            <div class="stat-card" style="flex-direction: column; text-align: center; padding: 16px;">
+                <i class="bi bi-wrench" style="font-size: 2rem; color: var(--warning); margin-bottom: 8px;"></i>
+                <span style="font-size: 0.875rem; color: var(--text-muted);">Remediation Tracking</span>
+            </div>
+            <div class="stat-card" style="flex-direction: column; text-align: center; padding: 16px;">
+                <i class="bi bi-shield-lock" style="font-size: 2rem; color: var(--info); margin-bottom: 8px;"></i>
+                <span style="font-size: 0.875rem; color: var(--text-muted);">DPDP Act Compliance</span>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 12px; justify-content: center;">
+        <a href="{% url 'login' %}" class="btn btn-primary">
+            <i class="bi bi-box-arrow-in-right"></i>
+            Login
+        </a>
+        <a href="{% url 'register' %}" class="btn btn-secondary">
+            <i class="bi bi-person-plus"></i>
+            Register
+        </a>
+    </div>
+
+    <div class="auth-footer">
+        <p style="color: var(--text-muted); font-size: 0.75rem;">
+            Digital Personal Data Protection Act Compliance Assessment Platform
+        </p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - DP-COMPASS{% endblock %}
+{% block page_title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="bi bi-person me-2"></i>
+                    Profile Information
+                </h2>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="id_first_name">First Name</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="id_last_name">Last Name</label>
+                        {{ form.last_name }}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="id_email">Email</label>
+                    {{ form.email }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="id_organization">Organization</label>
+                    {{ form.organization }}
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="id_designation">Designation</label>
+                        {{ form.designation }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="id_phone">Phone</label>
+                        {{ form.phone }}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check"></i>
+                    Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Account Status
+                </h2>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--text-muted);">Role</span>
+                    <span class="badge badge-primary">{{ user.get_role_display }}</span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--text-muted);">Status</span>
+                    <span class="badge {% if user.is_verified %}badge-success{% else %}badge-warning{% endif %}">
+                        {% if user.is_verified %}Verified{% else %}Pending Verification{% endif %}
+                    </span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--text-muted);">Member Since</span>
+                    <span>{{ user.date_joined|date:"M d, Y" }}</span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--text-muted);">Last Login</span>
+                    <span>{{ user.last_login|date:"M d, Y H:i"|default:"Never" }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

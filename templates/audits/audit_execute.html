@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}Execute Audit - DP-COMPASS{% endblock %}
+{% block page_title %}Execute Audit: {{ audit.title }}{% endblock %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <div>
+                <h2 class="card-title">{{ audit.application.name }}</h2>
+                <p style="color: var(--text-muted); margin: 0;">{{ audit.title }}</p>
+            </div>
+            <div>
+                <span class="badge badge-info">{{ audit.progress_percentage }}% Complete</span>
+            </div>
+        </div>
+
+        <div class="progress" style="height: 8px; margin-bottom: 16px;">
+            <div class="progress-bar" style="width: {{ audit.progress_percentage }}%;"></div>
+        </div>
+
+        <p style="color: var(--text-muted); font-size: 0.875rem;">
+            <i class="bi bi-info-circle me-1"></i>
+            Review each checklist item and mark its compliance status.
+        </p>
+    </div>
+
+    {% regroup responses by checklist_item.category as category_list %}
+
+    {% for category in category_list %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="bi bi-folder me-2"></i>
+                {{ category.grouper.name }}
+            </h2>
+            <span class="badge badge-primary">{{ category.list|length }} items</span>
+        </div>
+
+        {% for response in category.list %}
+        <div style="background: var(--bg-glass); padding: 16px; border-radius: 8px; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                <div>
+                    <h5 style="margin: 0;">
+                        <span style="color: var(--primary-light);">{{ response.checklist_item.code }}</span>
+                        {{ response.checklist_item.title }}
+                    </h5>
+                    <span class="badge badge-{% if response.checklist_item.severity == 'critical' %}danger{% elif response.checklist_item.severity == 'major' %}warning{% else %}info{% endif %}" style="margin-top: 4px;">
+                        {{ response.checklist_item.get_severity_display }}
+                    </span>
+                </div>
+            </div>
+
+            <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 12px;">
+                {{ response.checklist_item.description }}
+            </p>
+
+            {% if response.checklist_item.guidance %}
+            <details style="margin-bottom: 12px;">
+                <summary style="cursor: pointer; color: var(--primary-light); font-size: 0.875rem;">
+                    <i class="bi bi-lightbulb me-1"></i> Guidance
+                </summary>
+                <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 8px; padding-left: 16px;">
+                    {{ response.checklist_item.guidance }}
+                </p>
+            </details>
+            {% endif %}
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Status</label>
+                    <select name="status_{{ response.id }}" class="form-select">
+                        <option value="pending" {% if response.status == 'pending' %}selected{% endif %}>Pending Review</option>
+                        <option value="compliant" {% if response.status == 'compliant' %}selected{% endif %}>Compliant</option>
+                        <option value="non_compliant" {% if response.status == 'non_compliant' %}selected{% endif %}>Non-Compliant</option>
+                        <option value="partially_compliant" {% if response.status == 'partially_compliant' %}selected{% endif %}>Partially Compliant</option>
+                        <option value="not_applicable" {% if response.status == 'not_applicable' %}selected{% endif %}>Not Applicable</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Findings</label>
+                    <textarea name="findings_{{ response.id }}" class="form-control" rows="2" placeholder="Enter findings...">{{ response.findings }}</textarea>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Recommendations</label>
+                    <textarea name="recommendations_{{ response.id }}" class="form-control" rows="2" placeholder="Enter recommendations...">{{ response.recommendations }}</textarea>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% empty %}
+    <div class="card">
+        <p style="color: var(--text-muted); text-align: center; padding: 40px;">
+            No checklist items to review
+        </p>
+    </div>
+    {% endfor %}
+
+    <div class="card" style="position: sticky; bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="{% url 'audit_detail' audit.pk %}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+            <div style="display: flex; gap: 12px;">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save"></i> Save Progress
+                </button>
+                <button type="submit" name="complete" class="btn btn-success">
+                    <i class="bi bi-check-circle"></i> Complete Audit
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
