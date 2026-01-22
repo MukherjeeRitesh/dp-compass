@@ -1,0 +1,13 @@
+cd /Users/riteshmukherjee/Downloads/DPPP
+
+# 1. Login to Railway (opens browser)
+railway login
+
+# 2. Initialize a new project
+railway init
+
+# 3. Add PostgreSQL database
+railway add --plugin postgresql
+
+# 4. Deploy the app
+railway up

@@ -1,3 +1,1 @@
-# Procfile for Railway
-web: gunicorn dp_compass.wsgi --log-file -
-release: python manage.py migrate
+web: python manage.py migrate && python manage.py load_checklist && python manage.py create_railway_admin && python manage.py collectstatic --noinput && gunicorn dp_compass.wsgi:application --bind 0.0.0.0:$PORT
