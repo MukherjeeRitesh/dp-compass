@@ -25,3 +25,15 @@ class UserActivityAdmin(admin.ModelAdmin):
     list_filter = ('action', 'created_at')
     search_fields = ('user__username', 'details')
     readonly_fields = ('user', 'action', 'details', 'ip_address', 'created_at')
+    
+    def has_add_permission(self, request):
+        # UserActivity is auto-generated audit log, prevent manual creation
+        return False
+    
+    def has_delete_permission(self, request, obj=None):
+        # Audit logs should not be deleted
+        return False
+    
+    def has_change_permission(self, request, obj=None):
+        # Audit logs are read-only
+        return False
