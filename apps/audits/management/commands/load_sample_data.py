@@ -15,24 +15,36 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write('Creating sample data...')
         
-        # Get or create admin user
-        admin = User.objects.filter(username='admin').first()
-        if not admin:
-            self.stdout.write(self.style.ERROR('Admin user not found. Create superuser first.'))
-            return
-        
-        # Make admin an actual admin role
-        admin.role = 'admin'
-        admin.first_name = 'System'
-        admin.last_name = 'Administrator'
-        admin.organization = 'DP-COMPASS'
-        admin.is_verified = True
-        admin.save()
-        self.stdout.write('  Updated admin user')
+        # Create or get admin user
+        admin, created = User.objects.get_or_create(
+            username='admin',
+            defaults={
+                'email': 'admin@dpcompass.local',
+                'first_name': 'System',
+                'last_name': 'Administrator',
+                'role': 'admin',
+                'organization': 'DP-COMPASS',
+                'is_verified': True,
+                'is_staff': True,
+                'is_superuser': True,
+            }
+        )
+        if created:
+            admin.set_password('Admin@123')
+            admin.save()
+            self.stdout.write('  Created admin: admin / Admin@123')
+        else:
+            admin.role = 'admin'
+            admin.first_name = 'System'
+            admin.last_name = 'Administrator'
+            admin.organization = 'DP-COMPASS'
+            admin.is_verified = True
+            admin.save()
+            self.stdout.write('  Updated admin user')
         
         # Create an auditor
         auditor, created = User.objects.get_or_create(
-            username='auditor1',
+            username='auditor',
             defaults={
                 'email': 'auditor@dpcompass.local',
                 'first_name': 'Priya',
@@ -44,13 +56,13 @@ class Command(BaseCommand):
             }
         )
         if created:
-            auditor.set_password('auditor123')
+            auditor.set_password('Auditor@123')
             auditor.save()
-            self.stdout.write('  Created auditor: auditor1 / auditor123')
+            self.stdout.write('  Created auditor: auditor / Auditor@123')
         
         # Create a developer
         developer, created = User.objects.get_or_create(
-            username='developer1',
+            username='developer',
             defaults={
                 'email': 'developer@dpcompass.local',
                 'first_name': 'Rahul',
@@ -62,9 +74,9 @@ class Command(BaseCommand):
             }
         )
         if created:
-            developer.set_password('developer123')
+            developer.set_password('Developer@123')
             developer.save()
-            self.stdout.write('  Created developer: developer1 / developer123')
+            self.stdout.write('  Created developer: developer / Developer@123')
         
         # Create sample applications
         apps_data = [
@@ -163,6 +175,7 @@ class Command(BaseCommand):
         
         self.stdout.write(self.style.SUCCESS('\nSample data loaded successfully!'))
         self.stdout.write('\nTest Accounts:')
-        self.stdout.write('  Admin:     admin / admin123')
-        self.stdout.write('  Auditor:   auditor1 / auditor123')
-        self.stdout.write('  Developer: developer1 / developer123')
+        self.stdout.write('  Admin:     admin / Admin@123')
+        self.stdout.write('  Auditor:   auditor / Auditor@123')
+        self.stdout.write('  Developer: developer / Developer@123')
+
