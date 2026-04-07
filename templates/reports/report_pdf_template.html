@@ -141,7 +141,7 @@
             </tr>
             <tr>
                 <th>Auditor</th>
-                <td>{{ audit.auditor.get_full_name }}</td>
+                <td>{% if audit.auditor %}{{ audit.auditor.get_full_name|default:audit.auditor.username }}{% else %}Unassigned{% endif %}</td>
             </tr>
             <tr>
                 <th>Audit Date</th>

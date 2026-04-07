@@ -102,7 +102,7 @@
             <div style="display: flex; flex-direction: column; gap: 12px;">
                 <div style="display: flex; justify-content: space-between;">
                     <span style="color: var(--text-muted);">Auditor</span>
-                    <span>{{ audit.auditor.get_full_name|default:audit.auditor.username }}</span>
+                    <span>{% if audit.auditor %}{{ audit.auditor.get_full_name|default:audit.auditor.username }}{% else %}Unassigned{% endif %}</span>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
                     <span style="color: var(--text-muted);">Created</span>
