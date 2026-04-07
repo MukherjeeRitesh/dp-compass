@@ -51,8 +51,10 @@
                     <td style="color: var(--text-muted);">{{ audit.created_at|date:"M d, Y" }}</td>
                     <td>
                         <a href="{% url 'audit_detail' audit.pk %}" class="btn btn-ghost btn-sm">View</a>
-                        {% if audit.status != 'completed' and user == audit.auditor or user.is_admin_user %}
-                        <a href="{% url 'audit_execute' audit.pk %}" class="btn btn-primary btn-sm">Execute</a>
+                        {% if audit.status != 'completed' %}
+                            {% if user == audit.auditor or user.is_admin_user %}
+                            <a href="{% url 'audit_execute' audit.pk %}" class="btn btn-primary btn-sm">Execute</a>
+                            {% endif %}
                         {% endif %}
                     </td>
                 </tr>

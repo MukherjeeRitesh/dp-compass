@@ -132,11 +132,13 @@
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 8px;">
-                {% if audit.status != 'completed' and user == audit.auditor or user.is_admin_user %}
-                <a href="{% url 'audit_execute' audit.pk %}" class="btn btn-primary w-100">
-                    <i class="bi bi-play-circle"></i>
-                    {% if audit.status == 'pending' %}Start Audit{% else %}Continue Audit{% endif %}
-                </a>
+                {% if audit.status != 'completed' %}
+                    {% if user == audit.auditor or user.is_admin_user %}
+                    <a href="{% url 'audit_execute' audit.pk %}" class="btn btn-primary w-100">
+                        <i class="bi bi-play-circle"></i>
+                        {% if audit.status == 'pending' %}Start Audit{% else %}Continue Audit{% endif %}
+                    </a>
+                    {% endif %}
                 {% endif %}
 
                 {% if audit.status == 'completed' %}
