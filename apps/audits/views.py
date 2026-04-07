@@ -52,8 +52,8 @@ def audit_detail(request, pk):
 @login_required
 def audit_create(request):
     """Create a new audit."""
-    if not request.user.is_auditor:
-        messages.error(request, 'Only auditors can create audits.')
+    if not request.user.is_admin_user:
+        messages.error(request, 'Only admins can create audits.')
         return redirect('dashboard')
     
     if request.method == 'POST':
