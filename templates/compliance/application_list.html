@@ -43,7 +43,7 @@
                         <span class="badge badge-info">{{ app.get_application_type_display }}</span>
                     </td>
                     <td>{{ app.get_environment_display }}</td>
-                    <td>{{ app.owner.get_full_name|default:app.owner.username|default:"-" }}</td>
+                    <td><span class="user-name" style="font-size: inherit;">{{ app.owner.get_full_name|default:app.owner.username|default:"-" }}</span></td>
                     <td style="color: var(--text-muted);">
                         {% if app.latest_audit %}{{ app.latest_audit.created_at|date:"M d, Y" }}{% else %}-{% endif %}
                     </td>

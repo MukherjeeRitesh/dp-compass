@@ -173,6 +173,7 @@ body {
     justify-content: center;
     font-weight: 600;
     font-size: 0.875rem;
+    color: #ffffff;
 }
 
 .user-details {
@@ -183,7 +184,7 @@ body {
 .user-name {
     font-weight: 600;
     font-size: 0.875rem;
-    color: var(--text-primary);
+    color: var(--accent); /* High visibility accent color */
 }
 
 .user-role {
