@@ -108,7 +108,7 @@
             <p style="color: var(--text-muted); text-align: center; padding: 40px;">
                 <i class="bi bi-inbox" style="font-size: 2rem; display: block; margin-bottom: 12px;"></i>
                 No audits found.
-                {% if user.is_auditor or user.is_admin_user %}
+                {% if user.is_auditor %}
                 <a href="{% url 'audit_create' %}" style="color: var(--primary-light);">Create your first audit</a>
                 {% endif %}
             </p>
@@ -128,17 +128,19 @@
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 8px;">
-                {% if user.is_auditor or user.is_admin_user %}
+                {% if user.is_auditor %}
                 <a href="{% url 'audit_create' %}" class="btn btn-primary w-100">
                     <i class="bi bi-plus-circle"></i>
                     New Audit
                 </a>
                 {% endif %}
 
+                {% if not user.is_admin_user %}
                 <a href="{% url 'application_create' %}" class="btn btn-secondary w-100">
                     <i class="bi bi-app-indicator"></i>
                     Register Application
                 </a>
+                {% endif %}
 
                 <a href="{% url 'checklist_list' %}" class="btn btn-secondary w-100">
                     <i class="bi bi-list-check"></i>

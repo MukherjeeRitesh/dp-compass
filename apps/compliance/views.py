@@ -43,6 +43,10 @@ def application_detail(request, pk):
 @login_required
 def application_create(request):
     """Register a new application."""
+    if request.user.is_admin_user:
+        messages.error(request, 'Admins cannot register new applications.')
+        return redirect('dashboard')
+    
     if request.method == 'POST':
         form = ApplicationForm(request.POST)
         if form.is_valid():

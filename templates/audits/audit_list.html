@@ -10,7 +10,7 @@
             <i class="bi bi-clipboard-check me-2"></i>
             All Audits
         </h2>
-        {% if user.is_auditor or user.is_admin_user %}
+        {% if user.is_auditor %}
         <a href="{% url 'audit_create' %}" class="btn btn-primary">
             <i class="bi bi-plus"></i> New Audit
         </a>
