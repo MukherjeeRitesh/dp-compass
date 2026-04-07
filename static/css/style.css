@@ -441,6 +441,12 @@ body {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
+    color: var(--text-primary);
+    background-color: transparent;
+}
+
+.table th, .table td {
+    background-color: transparent !important;
 }
 
 .table thead th {
