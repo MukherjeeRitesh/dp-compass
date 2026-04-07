@@ -43,8 +43,8 @@ def application_detail(request, pk):
 @login_required
 def application_create(request):
     """Register a new application."""
-    if request.user.is_admin_user:
-        messages.error(request, 'Admins cannot register new applications.')
+    if not request.user.is_developer:
+        messages.error(request, 'Only developers can register new applications.')
         return redirect('dashboard')
     
     if request.method == 'POST':
@@ -70,8 +70,12 @@ def application_edit(request, pk):
     """Edit application details."""
     application = get_object_or_404(Application, pk=pk)
     
-    if request.user.is_developer and application.owner != request.user:
-        messages.error(request, 'Access denied.')
+    if not request.user.is_developer:
+        messages.error(request, 'Only developers can edit applications.')
+        return redirect('application_list')
+        
+    if application.owner != request.user:
+        messages.error(request, 'Access denied. You can only edit your own applications.')
         return redirect('application_list')
     
     if request.method == 'POST':
