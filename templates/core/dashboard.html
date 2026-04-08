@@ -142,10 +142,12 @@
                 </a>
                 {% endif %}
 
+                {% if not user.is_developer %}
                 <a href="{% url 'checklist_list' %}" class="btn btn-secondary w-100">
                     <i class="bi bi-list-check"></i>
                     View Checklist
                 </a>
+                {% endif %}
 
                 <a href="{% url 'report_list' %}" class="btn btn-secondary w-100">
                     <i class="bi bi-file-earmark-bar-graph"></i>

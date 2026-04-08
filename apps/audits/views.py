@@ -15,10 +15,12 @@ def audit_list(request):
     """List all audits based on user role."""
     user = request.user
     
+    if user.is_developer:
+        messages.error(request, 'Access denied.')
+        return redirect('dashboard')
+    
     if user.is_auditor:
         audits = Audit.objects.filter(auditor=user)
-    elif user.is_developer:
-        audits = Audit.objects.filter(application__owner=user)
     else:  # admin
         audits = Audit.objects.all()
     
@@ -126,6 +128,10 @@ def audit_execute(request, pk):
 @login_required
 def checklist_list(request):
     """View all checklist items organized by category."""
+    if request.user.is_developer:
+        messages.error(request, 'Access denied.')
+        return redirect('dashboard')
+    
     categories = AuditCategory.objects.filter(is_active=True).prefetch_related(
         'checklist_items'
     )

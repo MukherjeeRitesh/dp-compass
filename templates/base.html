@@ -49,6 +49,7 @@
                 <span>Applications</span>
             </a>
 
+            {% if not user.is_developer %}
             <a href="{% url 'audit_list' %}"
                 class="menu-item {% if 'audit' in request.resolver_match.url_name %}active{% endif %}">
                 <i class="bi bi-clipboard-check"></i>
@@ -60,6 +61,7 @@
                 <i class="bi bi-list-check"></i>
                 <span>Checklist</span>
             </a>
+            {% endif %}
 
             <a href="{% url 'remediation_list' %}"
                 class="menu-item {% if 'remediation' in request.resolver_match.url_name %}active{% endif %}">
