@@ -16,6 +16,7 @@
         </div>
     </div>
 
+    {% if not user.is_developer %}
     <div class="stat-card">
         <div class="stat-icon warning">
             <i class="bi bi-hourglass-split"></i>
@@ -45,10 +46,12 @@
             <p>Completed Audits</p>
         </div>
     </div>
+    {% endif %}
 </div>
 
 <div class="row g-4">
     <!-- Recent Audits -->
+    {% if not user.is_developer %}
     <div class="col-lg-8">
         <div class="card">
             <div class="card-header">
@@ -115,6 +118,7 @@
             {% endif %}
         </div>
     </div>
+    {% endif %}
 
     <!-- Quick Actions & Scores -->
     <div class="col-lg-4">
